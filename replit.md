@@ -2,7 +2,7 @@
 
 ## Overview
 
-RDX-BoT is a Facebook Messenger automation bot built with Node.js. It provides group management, Islamic content posting, an economy system, and various utility commands for Facebook Messenger groups. The bot uses a custom Facebook Chat API wrapper for authentication and messaging.
+RDX-BoT is a Facebook Messenger automation bot built with Node.js. It provides group management, Islamic content posting, an economy system, and various utility commands for Facebook Messenger groups. The bot uses a custom Facebook Chat API wrapper (`ws3-fca`) for messenger integration and SQLite for data persistence.
 
 ## User Preferences
 
@@ -22,9 +22,8 @@ Preferred communication style: Simple, everyday language.
 
 ### Command System
 - Commands stored in `rdx/commands/` directory (60+ command files)
-- Each command exports:
-  - `config` object with: name, aliases, description, usage, category, permissions (adminOnly, groupOnly)
-  - `run` function that receives: api, event, args, send, config, client, Users, Threads, Currencies
+- Each command exports a `config` object with: name, aliases, description, usage, category, permissions (adminOnly, groupOnly)
+- Each command exports a `run` function that receives: api, event, args, send, config, client, Users, Threads, Currencies
 - Commands loaded dynamically via `Data/system/handle/handleRefresh.js`
 - Supports prefixed commands (configurable prefix, default ".")
 - Command categories: Admin, Group, Economy, Media, Fun, Utility, Friend, Profile
@@ -49,29 +48,38 @@ Preferred communication style: Simple, everyday language.
 
 ### Configuration
 - `Data/config/envconfig.json` - Bot settings (name, prefix, admins, timezone, feature toggles)
-- `Data/config/islamic_messages.json` - Islamic content for scheduled auto-posting
+- `Data/config/islamic_messages.json` - Islamic content for auto-posting
+
+### Key Features
+1. **Group Management** - Admin commands, anti-join/anti-out, member kicking, group locking
+2. **Islamic Content** - Scheduled Quran ayats, namaz reminders, duas
+3. **Economy System** - Daily rewards, balance, deposits, gambling
+4. **AI Chat** - Integration with Cerebras AI for conversational responses
+5. **Media Commands** - Avatar fetching, GIF search, image editing, cover creation
 
 ## External Dependencies
 
-### NPM Packages
-- **ws3-fca** - Facebook Chat API wrapper (customized as rdx-fca)
-- **better-sqlite3** - SQLite database driver
-- **express** - Web server for dashboard
-- **axios** - HTTP client for API calls
-- **node-cron** - Task scheduling for automated posts
-- **moment-timezone** - Timezone-aware date/time handling (Asia/Karachi)
-- **jimp/canvas** - Image processing for profile pictures and edits
+### Core Dependencies
+- **express** - Web server for dashboard (port 5000)
+- **better-sqlite3** - SQLite database for user/thread/currency data
+- **ws3-fca** - Facebook Chat API wrapper (customized version in `Data/rdx-fca/`)
+- **node-cron** - Scheduled tasks for Islamic content posting
+- **moment-timezone** - Timezone handling (default: Asia/Karachi)
+
+### Media & Utilities
+- **axios** - HTTP requests for external APIs
+- **jimp** - Image processing for profile pictures and edits
+- **canvas** - Image generation for covers and edits
 - **fs-extra** - Enhanced file system operations
-- **chalk** - Terminal styling for logs
+- **yt-search** - YouTube search functionality
 
 ### External APIs
-- **Facebook Graph API** - User profile pictures, friend requests
-- **Google Translate API** - Translation commands (Arabic, Bengali, English)
+- **Cerebras AI** - Conversational AI responses (requires API key)
 - **Tenor API** - GIF search functionality
-- **Cerebras AI** - Conversational AI responses
+- **ImgBB API** - Image hosting
+- **Facebook Graph API** - Profile pictures and user data
 
-### File Storage
-- `appstate.json` - Facebook session cookies
-- `fb_dtsg_data.json` - Facebook dynamic tokens
-- `Data/system/database/` - SQLite database files
-- `rdx/commands/cache/` - Temporary media files (auto-cleaned)
+### Authentication
+- Facebook session cookies stored in `appstate.json`
+- Bot admin UIDs configured in `envconfig.json`
+- Group approval system for controlled access
