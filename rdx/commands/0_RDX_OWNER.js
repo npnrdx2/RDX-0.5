@@ -47,7 +47,7 @@ module.exports = {
 ║  📛 Name: ${config.BOTNAME || 'SARDAR RDX'}
 ║  ⚡ Prefix: ${config.PREFIX || '.'}
 ║  💻 Version: 2.0.0        ║
-║  🛠️ Framework: WS3-FCA    ║
+║  🛠️ Framework: RDX-FCA    ║
 ║                           ║
 ╠═══════════════════════════╣
 ║  💝 𝙏𝙝𝙖𝙣𝙠 𝙮𝙤𝙪 𝙛𝙤𝙧 𝙪𝙨𝙞𝙣𝙜!  ║
